@@ -1,16 +1,5 @@
-st.markdown(
-    """
-    <style>
-    .stButton>button {
-        background-color: green;
-        color: white;
-        font-size: 18px;
-        border-radius: 10px;
-        padding: 10px 20px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True)
+# ================= Prediction =================
+
 import streamlit as st
 import joblib
 import pandas as pd
@@ -51,15 +40,23 @@ with col2:
 st.markdown("---")
 
 # ================= Prediction =================
-if st.button("🚀 Predict Crop"):
-    try:
-        input_data = [inputs]
-        input_data = scaler.transform(input_data)
 
-        prediction = model.predict(input_data)
-        crop_name = encoder.inverse_transform(prediction)
+st.markdown("### 🔍 Get Recommendation")
 
-        st.success(f"🌱 Recommended Crop: **{crop_name[0]}**")
+predict_btn = st.button("🚀 Predict Crop", use_container_width=True)
 
-    except Exception as e:
-        st.error(f"Error: {e}")
+if predict_btn:
+    with st.spinner("Analyzing data... ⏳"):
+        try:
+            input_data = [inputs]
+            input_data = scaler.transform(input_data)
+
+            prediction = model.predict(input_data)
+            crop_name = encoder.inverse_transform(prediction)
+
+            st.success(f"🌱 Recommended Crop: {crop_name[0]}")
+
+            st.balloons()  # شكل حلو 😄
+
+        except Exception as e:
+            st.error(f"Error: {e}")
